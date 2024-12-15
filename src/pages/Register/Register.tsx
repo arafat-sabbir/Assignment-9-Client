@@ -3,18 +3,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
-import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import CustomFormField from "../CustomFormField";
 import { RegisterFormValidation } from "@/lib/validation";
-import Container from "@/layout/Container/Container";
 import { toast } from "sonner";
-import { Link, useNavigate } from "react-router-dom";
-import BackToHome from "../BackToHome";
+import { Link, useNavigate } from "react-router";
 import useAxiosPublic from "@/hooks/AxiosPublic";
 import { useDropzone } from "react-dropzone";
 import { useState } from "react"; // Import useState to manage the image file
 import { Loader } from "lucide-react";
+import Container from "@/components/shared/Container";
+import BackToHome from "@/components/ui/BackToHome";
+import CustomFormField, { FormFieldType } from "@/components/ui/CustomFormField";
+import { Button } from "@/components/ui/button";
 
 
 

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Container from "./Container";
 import Menu from "./Menu";
 import NavSheet from "./NavSheet";
+import { NavLink } from "react-router";
 
 const Navbar = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -33,16 +34,19 @@ const Navbar = () => {
       )}
     >
       <Container className="flex items-center gap-4 justify-between py-3 lg:py-6 duration-300">
-        <div className="basis-[204px]">
-          AssignMent 8
-        </div>
+        <div className="basis-[204px]">AssignMent 8</div>
         <div className="hidden lg:block">
           <Menu isNavbarSticky={isSticky} />
         </div>
         <div className="hidden lg:flex justify-end basis-[204px] ">
-          Login /User
+          <NavLink
+            to="/login"
+            className="text-[#494949] font-medium hover:text-[#0d6efd]"
+          >
+            Login
+          </NavLink>
         </div>
-        <NavSheet className="bg-red-500"/>
+        <NavSheet className="bg-red-500" />
       </Container>
     </nav>
   );

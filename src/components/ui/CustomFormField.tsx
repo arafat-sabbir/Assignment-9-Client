@@ -14,9 +14,10 @@ import { E164Number } from "libphonenumber-js";
 
 import "react-phone-number-input/style.css";
 import { cn } from "@/lib/utils";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+import { Input } from "./input";
+import { Textarea } from "./textarea";
+import { Select, SelectContent, SelectTrigger } from "@radix-ui/react-select";
+import { SelectValue } from "./select";
 
 
 

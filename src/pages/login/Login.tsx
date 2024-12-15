@@ -3,27 +3,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
-import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
-import CustomFormField from "../CustomFormField";
 import { LoginFormValidation } from "@/lib/validation";
-import Container from "@/layout/Container/Container";
 import { toast } from "sonner";
-import { Link, useNavigate } from "react-router-dom";
-import BackToHome from "../BackToHome";
+import { Link, useNavigate } from "react-router";
 import useAxiosPublic from "@/hooks/AxiosPublic";
 import { useAppDispatch } from "@/redux/features/hooks";
 import { decodeToken } from "@/utils/decodeToken";
 import { setUser, TUser } from "@/redux/features/auth/authSlice";
 import { useState } from "react";
 import { Loader } from "lucide-react";
+import Container from "@/components/shared/Container";
+import BackToHome from "@/components/ui/BackToHome";
+import CustomFormField, { FormFieldType } from "@/components/ui/CustomFormField";
+import { Button } from "@/components/ui/button";
 
-export enum FormFieldType {
-  INPUT = "input",
-  TEXTAREA = "text_area",
-  PHONE_INPUT = "phone_input",
-  SELECT = "select",
-}
 const Login = ({ className }: { className?: string }) => {
   const axios = useAxiosPublic();
   const dispatch = useAppDispatch();
