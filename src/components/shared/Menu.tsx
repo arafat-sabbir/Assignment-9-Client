@@ -22,7 +22,7 @@ const Menu = ({
   user,
 }: {
   className?: string;
-  isNavbarSticky: boolean;
+  isNavbarSticky?: boolean;
   user?: any;
 }) => {
   const { pathname } = useLocation();

@@ -8,13 +8,13 @@ const useMyProducts = () => {
   const user = useAppSelector(selectCurrentUser);
 
   // If there is no user, return an empty query result to prevent the API request
-  const userId = user?.userId;
+  const userId = (user as any)?.userId;
 
   return useQuery({
     queryKey: ["product"],
     queryFn: async () => {
       if (!userId) return Promise.reject(new Error("User not authenticated"));
-      
+
       const res = await axios.get("/product/get-my-products");
       return res.data.data;
     },

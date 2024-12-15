@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import {
   Sheet,
   SheetContent,
@@ -13,8 +12,6 @@ import { Button } from "../ui/button";
 import NavbarCta from "./NavCta";
 
 const NavSheet = ({
-  className,
-  generalSiteSettings,
   user,
 }: {
   className?: string;
@@ -22,25 +19,13 @@ const NavSheet = ({
   user?: any;
 }) => {
   const [open, setOpen] = useState(false);
-  const [isLogout, setIsLogout] = useState(false);
-  const signOutUser = () => {};
   const handleLogout = async () => {
-    try {
-      const response = await signOutUser();
-
-      if (response?.error) {
-        throw new Error(response.error);
-      }
-
-      setIsLogout(true);
-    } catch (error) {
-      toast.error(error?.message);
-    }
+    
   };
 
   // Close the sheet when the user presses the Escape key
   useEffect(() => {
-    const handleEscape = (e) => {
+    const handleEscape = (e:any) => {
       if (e.key === "Escape") {
         setOpen(false);
       }
@@ -63,12 +48,6 @@ const NavSheet = ({
 
     return () => window.removeEventListener("resize", handleResize);
   }, [open]);
-
-  useEffect(() => {
-    if (isLogout) {
-      location.reload();
-    }
-  }, [isLogout]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

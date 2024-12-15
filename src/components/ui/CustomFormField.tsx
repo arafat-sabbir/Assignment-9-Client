@@ -54,7 +54,6 @@ interface CustomProps {
 
 const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const {
     iconSrc,
     iconAlt,
@@ -62,10 +61,7 @@ const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
     placeholder,
     className,
     type,
-    onChange,
-    min = 0,
-    max = 100,
-    step = 1,
+    onChange
   } = props;
 
   switch (fieldType) {
@@ -196,52 +192,6 @@ const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
               {props.children}
             </SelectContent>
           </Select>
-        </FormControl>
-      );
-    case FormFieldType.RANGE:
-      return (
-        <FormControl>
-          <div className="flex flex-col items-start">
-            <Range
-              step={step}
-              min={min}
-              max={max}
-              values={[field.value || min]}
-              onChange={(values) => {
-                field.onChange(values[0]);
-                if (onChange) onChange(values[0]);
-              }}
-              renderTrack={({ props, children }) => {
-                const percentage = ((field.value - min) / (max - min)) * 100;
-                return (
-                  <div
-                    {...props}
-                    style={{
-                      ...props.style,
-                      height: "6px",
-                      width: "100%",
-                      background: `linear-gradient(90deg, #F96815 ${percentage}%, #ccc ${percentage}%)`, // Progress effect
-                    }}
-                  >
-                    {children}
-                  </div>
-                );
-              }}
-              renderThumb={({ props }) => (
-                <div
-                  className="size-5 rounded-full bg-[#F96815]"
-                  {...props}
-                  style={{
-                    ...props.style,
-                  }}
-                />
-              )}
-            />
-            {/* Display the selected value */}
-            <span className="mt-2 text-gray-500">
-              {field.value || min}% / {max}%
-            </span>
-          </div>
         </FormControl>
       );
 

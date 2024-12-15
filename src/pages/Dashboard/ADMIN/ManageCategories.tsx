@@ -1,20 +1,10 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-  useReactTable,
-  getCoreRowModel,
-} from "@tanstack/react-table";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import CustomDataTable from "@/components/shared/CustomDataTable";
+import { Input } from "@/components/ui/input";
+// import { useForm } from "react-hook-form";
 
 const ManageCategories = () => {
   const [categories, setCategories] = useState([
@@ -22,6 +12,7 @@ const ManageCategories = () => {
     { id: 2, name: "Clothing" },
     { id: 3, name: "Groceries" },
   ]);
+
   const [newCategory, setNewCategory] = useState("");
 
   // Add a new category
@@ -60,24 +51,16 @@ const ManageCategories = () => {
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <h2 className="text-xl font-semibold mb-4">Add Category</h2>
-            <Form>
-              <FormField>
-                <FormItem>
-                  <FormLabel>Category Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      value={newCategory}
-                      onChange={(e) => setNewCategory(e.target.value)}
-                      placeholder="Enter category name"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </FormField>
+            <form>
+              <Input
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                placeholder="Enter category name"
+              />
               <Button onClick={handleAddCategory} className="mt-4 w-full">
                 Save
               </Button>
-            </Form>
+            </form>
           </DialogContent>
         </Dialog>
       </div>

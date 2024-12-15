@@ -8,7 +8,7 @@ const useMyAddress= () => {
   const user = useAppSelector(selectCurrentUser);
 
   // If there is no user, return an empty query result to prevent the API request
-  const userId = user?.userId;
+  const userId = (user  as any)?.userId;
 
   return useQuery({
     queryKey: ["address"],

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Container from "./Container";
 import Menu from "./Menu";
 import NavSheet from "./NavSheet";
-import { Link, NavLink } from "react-router";
+import { Link} from "react-router";
 import { Button } from "../ui/button";
 import { useTheme } from "../ui/theme-provider";
 import { Moon, Sun } from "lucide-react";
