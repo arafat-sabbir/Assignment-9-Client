@@ -20,11 +20,12 @@ const UserProfile = ({ user, cart }: { user: TUser; cart: number }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
-          className="rounded-full p-1 h-12 w-12 shadow-md hover:shadow-lg"
+          className="rounded-full p-1 h-12 w-12 shadow-2xl"
         >
           <img
-            src={generateImage(user?.photo)}
+            src={
+              "https://i.ibb.co.com/tQ0K88j/dummy-profile-pic-300x300-1-removebg-preview.png"
+            }
             className="w-full h-full rounded-full object-cover cursor-pointer"
             alt={user?.name || "User Profile"}
           />

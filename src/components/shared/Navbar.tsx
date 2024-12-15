@@ -10,11 +10,13 @@ import { Button } from "../ui/button";
 import { useTheme } from "../ui/theme-provider";
 import { Moon, Sun } from "lucide-react";
 import UserProfile from "./UserProfile";
+import { useAppSelector } from "@/redux/features/hooks";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 
 const Navbar = () => {
   const { theme, setTheme } = useTheme();
+  const user = useAppSelector(selectCurrentUser);
   const cartProducts = JSON.parse(localStorage.getItem("cart") || "[]");
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [isSticky, setIsSticky] = useState(false);
   // Handle sticky navbar
   useEffect(() => {
@@ -31,6 +33,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  console.log(user);
   return (
     <nav
       className={cn(
@@ -69,14 +72,8 @@ const Navbar = () => {
               <UserProfile user={user} cart={cartProducts?.length} />
             )}
           </div>
-          <NavLink
-            to="/login"
-            className="text-[#494949] font-medium hover:text-[#0d6efd]"
-          >
-            Login
-          </NavLink>
         </div>
-        <NavSheet className="bg-red-500" />
+        <NavSheet />
       </Container>
     </nav>
   );

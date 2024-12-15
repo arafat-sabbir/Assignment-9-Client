@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import PhoneInput from "react-phone-number-input";
-
 import {
   FormControl,
   FormField,
@@ -9,24 +7,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Control } from "react-hook-form";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { E164Number } from "libphonenumber-js";
-
 import "react-phone-number-input/style.css";
 import { cn } from "@/lib/utils";
+import { Eye, EyeOff } from "lucide-react";
+import { TagsInput } from "react-tag-input-component";
 import { Input } from "./input";
 import { Textarea } from "./textarea";
-import { Select, SelectContent, SelectTrigger } from "@radix-ui/react-select";
-import { SelectValue } from "./select";
-
-
-
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./select";
 
 export enum FormFieldType {
   INPUT = "input",
   TEXTAREA = "text_area",
   PHONE_INPUT = "phone_input",
   SELECT = "select",
+  CALENDAR = "calendar",
+  TAGS = "tags",
+  CHECKBOX = "checkbox",
+  PASSWORD = "password",
+  RANGE = "range", // Add range type
 }
 
 interface CustomProps {
@@ -34,33 +34,40 @@ interface CustomProps {
   fieldType: FormFieldType;
   defaultValue?: string;
   name: string;
-  type?: string;
   onChange?: (e: any) => void;
   label?: string;
   placeholder: string;
   iconSrc?: string;
   disabled?: boolean;
-  required?: boolean;
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: ReactNode;
-  accept?: string;
-  multiple?: boolean;
   iconAlt?: string;
+  calendarMode?: string;
   className?: string;
-  renderSkeleton?: (filed: any) => ReactNode;
+  type?: string;
+  renderSkeleton?: (field: any) => ReactNode;
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
 const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const {
     iconSrc,
     iconAlt,
     fieldType,
     placeholder,
     className,
+    type,
     onChange,
-    required = false,
+    min = 0,
+    max = 100,
+    step = 1,
   } = props;
+
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
@@ -72,24 +79,52 @@ const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
               height={24}
               width={24}
               className="mx-3 border-0"
-            ></img>
+            />
           )}
           <FormControl>
             <Input
               placeholder={placeholder}
+              disabled={props.disabled}
               {...field}
-              required={required}
-              type={props?.type}
-              accept={props?.accept}
-              multiple={props?.multiple}
+              type={type}
               className={cn(
-                "focus:ring-0 focus:outline-none font-bai ",
+                "border-0 focus:ring-0 focus:outline-none",
                 className
               )}
             />
           </FormControl>
         </div>
       );
+
+    case FormFieldType.PASSWORD:
+      return (
+        <div className={cn("flex rounded-md border items-center", className)}>
+          <FormControl>
+            <Input
+              placeholder={placeholder}
+              disabled={props.disabled}
+              {...field}
+              type={showPassword ? "text" : "password"}
+              className={cn(
+                "border-0 focus:ring-0 focus:outline-none flex-1 focus-visible:ring-0",
+                className
+              )}
+            />
+          </FormControl>
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="p-2 rounded-r-md focus:outline-none bg-inherit"
+          >
+            {showPassword ? (
+              <EyeOff className="text-gray-500" size={20} />
+            ) : (
+              <Eye className="text-gray-500" size={20} />
+            )}
+          </button>
+        </div>
+      );
+
     case FormFieldType.PHONE_INPUT:
       return (
         <FormControl>
@@ -98,40 +133,61 @@ const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
             defaultCountry="BD"
             placeholder={placeholder}
             international
-            required={required}
+            disabled={props.disabled}
+            {...field}
             withCountryCallingCode
             value={field.value as E164Number | undefined}
-            className={cn("border border-gray-300 p-1.5 font-bai", className)}
+            className={cn("input-phone", className)}
             numberInputProps={{
               className:
-                "rounded-md px-4 focus:outline-none w-1/2 bg-transparent dark:bg-transparent text-gray-500", // my Tailwind classes
+                "rounded-md px-4 focus:outline-none w-1/2 bg-transparent dark:bg-transparent text-sm  text-gray-500",
             }}
           />
         </FormControl>
       );
+
     case FormFieldType.TEXTAREA:
       return (
         <FormControl>
           <Textarea
-            placeholder={props.placeholder}
-            {...field}
-            required={required}
-            className={cn("border focus:ring-0 focus:outline-none", className)}
+            placeholder={placeholder}
             disabled={props.disabled}
+            {...field}
+            className={cn("border focus:ring-0 focus:outline-none", className)}
           />
         </FormControl>
       );
+
+    case FormFieldType.TAGS:
+      return (
+        <FormControl>
+          <TagsInput
+            value={field.value || []}
+            onChange={(newTags) => {
+              field.onChange(newTags);
+              if (onChange) onChange(newTags);
+            }}
+            name="tags"
+            classNames={{
+              input:
+                "rounded-md px-4 outline-none border-0 focus:border-0 focus:ring-0 focus:ring-none focus:outline-none w-1/2 bg-transparent text-sm  text-gray-500 text-sm placeholder:text-sm",
+              tag: "rounded-md bg-transparent dark:bg-gray-600 text-sm",
+            }}
+            placeHolder={props.placeholder || "Enter Tags"}
+          />
+        </FormControl>
+      );
+
     case FormFieldType.SELECT:
       return (
         <FormControl>
           <Select
-            required={required}
-            onValueChange={(value: string) => {
+            onValueChange={(value) => {
               field.onChange(value);
               if (onChange) onChange(value);
             }}
-            value={field.value} // Bind the value correctly
-            disabled={props.disabled} // Handle the disabled state
+            value={field.value}
+            disabled={props.disabled}
           >
             <SelectTrigger className="shad-select-trigger">
               <SelectValue placeholder={placeholder} />
@@ -142,11 +198,60 @@ const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
           </Select>
         </FormControl>
       );
+    case FormFieldType.RANGE:
+      return (
+        <FormControl>
+          <div className="flex flex-col items-start">
+            <Range
+              step={step}
+              min={min}
+              max={max}
+              values={[field.value || min]}
+              onChange={(values) => {
+                field.onChange(values[0]);
+                if (onChange) onChange(values[0]);
+              }}
+              renderTrack={({ props, children }) => {
+                const percentage = ((field.value - min) / (max - min)) * 100;
+                return (
+                  <div
+                    {...props}
+                    style={{
+                      ...props.style,
+                      height: "6px",
+                      width: "100%",
+                      background: `linear-gradient(90deg, #F96815 ${percentage}%, #ccc ${percentage}%)`, // Progress effect
+                    }}
+                  >
+                    {children}
+                  </div>
+                );
+              }}
+              renderThumb={({ props }) => (
+                <div
+                  className="size-5 rounded-full bg-[#F96815]"
+                  {...props}
+                  style={{
+                    ...props.style,
+                  }}
+                />
+              )}
+            />
+            {/* Display the selected value */}
+            <span className="mt-2 text-gray-500">
+              {field.value || min}% / {max}%
+            </span>
+          </div>
+        </FormControl>
+      );
+
+    // Other cases remain unchanged
   }
 };
 
 const CustomFormField = (props: CustomProps) => {
   const { control, label, name } = props;
+
   return (
     <FormField
       control={control}

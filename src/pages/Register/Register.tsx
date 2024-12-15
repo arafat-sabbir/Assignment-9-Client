@@ -8,51 +8,35 @@ import { RegisterFormValidation } from "@/lib/validation";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router";
 import useAxiosPublic from "@/hooks/AxiosPublic";
-import { useDropzone } from "react-dropzone";
 import { useState } from "react"; // Import useState to manage the image file
 import { Loader } from "lucide-react";
 import Container from "@/components/shared/Container";
 import BackToHome from "@/components/ui/BackToHome";
-import CustomFormField, { FormFieldType } from "@/components/ui/CustomFormField";
+import CustomFormField, {
+  FormFieldType,
+} from "@/components/ui/CustomFormField";
 import { Button } from "@/components/ui/button";
-
-
+import { SelectItem } from "@/components/ui/select";
 
 const Register = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
   const axios = useAxiosPublic();
-  const [photo, setPhoto] = useState<File | null>(null); // State to store the selected photo
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null); // State for photo preview
-
   const form = useForm<z.infer<typeof RegisterFormValidation>>({
     resolver: zodResolver(RegisterFormValidation),
     defaultValues: {
       email: "",
       password: "",
       name: "",
+      role: "USER",
     },
   });
-
-  const onDrop = (acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      setPhoto(acceptedFiles[0]); // Set the first accepted file as the photo
-      setPhotoPreview(URL.createObjectURL(acceptedFiles[0])); // Create a preview URL
-    }
-  };
 
   const [loading, setLoading] = useState<boolean>(false);
   const onSubmit = async (values: z.infer<typeof RegisterFormValidation>) => {
     setLoading(true);
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("email", values.email);
-    formData.append("password", values.password);
-    if (photo) {
-      formData.append("image", photo); // Append the photo to FormData
-    }
-
+    console.log(values);
     try {
-      const response = await axios.post("/user/register", formData);
+      const response = await axios.post("/auth/signup", values);
       toast.success("Register Successful");
       console.log(response);
       navigate("/login");
@@ -63,12 +47,6 @@ const Register = ({ className }: { className?: string }) => {
       setLoading(false);
     }
   };
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    maxFiles: 1, // Limit to a single file
-  });
-
   return (
     <Container className="flex justify-center items-center h-screen relative">
       <BackToHome />
@@ -107,29 +85,19 @@ const Register = ({ className }: { className?: string }) => {
               iconAlt="password"
             />
             {/* Dropzone for image upload */}
-            <div>
-              <label htmlFor="photo" className="font-medium">
-                Photo
-              </label>
-              <div
-                {...getRootProps()}
-                className="border-dashed border-2 border-gray-300 p-4 rounded"
-              >
-                <input {...getInputProps()} />
-                {photo && (
-                  <div className="flex justify-center">
-                    <img
-                      src={photoPreview!}
-                      alt="Preview"
-                      className="h-32 w-32 object-cover rounded mt-2"
-                    />
-                  </div>
-                )}
-                <p className="text-center">
-                  Drag 'n' drop your photo here, or click to select one
-                </p>
-              </div>
-            </div>
+            <CustomFormField
+              label="Role"
+              control={form.control}
+              className="rounded-none"
+              fieldType={FormFieldType.SELECT}
+              name="role"
+              placeholder="Select Your Role"
+              iconAlt="password"
+            >
+              <SelectItem value="USER">User</SelectItem>
+              <SelectItem value="VENDOR">Vendor</SelectItem>
+            </CustomFormField>
+
             <Button
               disabled={loading}
               className="mt-4 bg-primary mx-auto lg:mx-0 w-full"

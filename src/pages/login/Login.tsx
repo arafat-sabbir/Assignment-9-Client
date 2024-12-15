@@ -15,7 +15,9 @@ import { useState } from "react";
 import { Loader } from "lucide-react";
 import Container from "@/components/shared/Container";
 import BackToHome from "@/components/ui/BackToHome";
-import CustomFormField, { FormFieldType } from "@/components/ui/CustomFormField";
+import CustomFormField, {
+  FormFieldType,
+} from "@/components/ui/CustomFormField";
 import { Button } from "@/components/ui/button";
 
 const Login = ({ className }: { className?: string }) => {
@@ -34,7 +36,7 @@ const Login = ({ className }: { className?: string }) => {
   const onSubmit = async (values: z.infer<typeof LoginFormValidation>) => {
     setLoading(true);
     try {
-      const result = await axios.post("/user/login", values);
+      const result = await axios.post("/auth/signin", values);
       toast.success(result?.data?.message);
       const user = decodeToken(result.data.data.accessToken) as TUser;
       dispatch(setUser({ user, token: result.data.data.accessToken }));
