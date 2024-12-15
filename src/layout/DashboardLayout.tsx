@@ -1,17 +1,21 @@
-import { NavLink, Outlet, useNavigate } from "react-router";
-import { FaHome, FaUser, FaListUl } from "react-icons/fa";
-import { FaUsersRays } from "react-icons/fa6";
-import { GoCodeReview, GoListUnordered } from "react-icons/go";
-import { IoIosGitPullRequest } from "react-icons/io";
-import { MdOutlineReviews } from "react-icons/md";
-import { TbBrandWish, TbHomeDollar } from "react-icons/tb";
-import {
-  RiAdvertisementLine,
-  RiGitPullRequestFill,
-  RiMoneyEuroCircleLine,
-} from "react-icons/ri";
-import { HiOutlineFolderAdd } from "react-icons/hi";
-import { MdOutlineHolidayVillage } from "react-icons/md";
+import { NavLink, Outlet } from "react-router";
+import { 
+  FaHome, 
+  FaUsers, 
+  FaShoppingCart, 
+  FaList, 
+  FaTag, 
+  FaRegBuilding, 
+  FaMoneyBillWave, 
+  FaStore,
+  FaClipboardList,
+  FaStar,
+  FaRegCommentDots
+} from "react-icons/fa";
+import { MdCategory, MdReviews, MdAnalytics } from "react-icons/md";
+import { IoMdLogOut } from "react-icons/io";
+import { AiFillDashboard } from "react-icons/ai";
+
 import { useAppDispatch, useAppSelector } from "@/redux/features/hooks";
 import {
   logOut,
@@ -29,6 +33,7 @@ const DashBoard = () => {
   const userinfo = useAppSelector(selectCurrentUser) as TUser;
   const role = userinfo?.role;
   const [sheetOpen, setSheetOpen] = useState(false);
+
   const dashboardItem = (
     <ul className="space-y-4 p-4">
       {role === "ADMIN" ? (
@@ -36,7 +41,7 @@ const DashBoard = () => {
           {/* Admin Sidebar */}
           <li>
             <NavLink to="/dashboard" className="flex items-center space-x-2">
-              <FaUser />
+              <MdAnalytics />
               <span>Dashboard</span>
             </NavLink>
           </li>
@@ -45,7 +50,7 @@ const DashBoard = () => {
               to="/dashboard/manageShop"
               className="flex items-center space-x-2"
             >
-              <MdOutlineHolidayVillage />
+              <FaStore />
               <span>Manage Shop</span>
             </NavLink>
           </li>
@@ -54,7 +59,7 @@ const DashBoard = () => {
               to="/dashboard/manageUsers"
               className="flex items-center space-x-2"
             >
-              <FaUsersRays />
+              <FaUsers />
               <span>Manage Users</span>
             </NavLink>
           </li>
@@ -63,7 +68,7 @@ const DashBoard = () => {
               to="/dashboard/manageCategories"
               className="flex items-center space-x-2"
             >
-              <MdOutlineReviews />
+              <MdCategory />
               <span>Manage Category</span>
             </NavLink>
           </li>
@@ -72,7 +77,7 @@ const DashBoard = () => {
               to="/dashboard/manageTransaction"
               className="flex items-center space-x-2"
             >
-              <RiAdvertisementLine />
+              <FaMoneyBillWave />
               <span>Advertise Transaction</span>
             </NavLink>
           </li>
@@ -81,7 +86,7 @@ const DashBoard = () => {
               to="/dashboard/manageReview"
               className="flex items-center space-x-2"
             >
-              <RiGitPullRequestFill />
+              <MdReviews />
               <span>Manage Review</span>
             </NavLink>
           </li>
@@ -94,7 +99,7 @@ const DashBoard = () => {
               to="/dashboard/order"
               className="flex items-center space-x-2"
             >
-              <FaUser />
+              <FaShoppingCart />
               <span>Order History</span>
             </NavLink>
           </li>
@@ -103,7 +108,7 @@ const DashBoard = () => {
               to="/dashboard/products"
               className="flex items-center space-x-2"
             >
-              <TbBrandWish />
+              <FaList />
               <span>Manage Products</span>
             </NavLink>
           </li>
@@ -112,7 +117,7 @@ const DashBoard = () => {
               to="/dashboard/myReview"
               className="flex items-center space-x-2"
             >
-              <GoCodeReview />
+              <FaStar />
               <span>My Review</span>
             </NavLink>
           </li>
@@ -122,16 +127,16 @@ const DashBoard = () => {
           {/* Vendor Sidebar */}
           <li>
             <NavLink to="/dashboard" className="flex items-center space-x-2">
-              <FaUser />
+              <AiFillDashboard />
               <span>Dashboard</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/manageShop"
+              to="/dashboard/manageMyShop"
               className="flex items-center space-x-2"
             >
-              <HiOutlineFolderAdd />
+              <FaRegBuilding />
               <span>Manage Shop</span>
             </NavLink>
           </li>
@@ -140,7 +145,7 @@ const DashBoard = () => {
               to="/dashboard/manageProduct"
               className="flex items-center space-x-2"
             >
-              <GoListUnordered />
+              <FaTag />
               <span>Manage Product</span>
             </NavLink>
           </li>
@@ -149,7 +154,7 @@ const DashBoard = () => {
               to="/dashboard/manage-orders"
               className="flex items-center space-x-2"
             >
-              <RiMoneyEuroCircleLine />
+              <FaClipboardList />
               <span>Manage Orders</span>
             </NavLink>
           </li>
@@ -158,7 +163,7 @@ const DashBoard = () => {
               to="/dashboard/manage-reviews"
               className="flex items-center space-x-2"
             >
-              <IoIosGitPullRequest />
+              <FaRegCommentDots />
               <span>Manage Reviews</span>
             </NavLink>
           </li>
@@ -174,9 +179,10 @@ const DashBoard = () => {
       <li>
         <button
           onClick={handleSignOut}
-          className="w-full px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+          className="w-full px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center justify-center space-x-2"
         >
-          Sign Out
+          <IoMdLogOut />
+          <span>Sign Out</span>
         </button>
       </li>
     </ul>
@@ -204,7 +210,7 @@ const DashBoard = () => {
       <div className="lg:hidden rounded-full h-full bg-gray-100 p-4">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger className="rounded-full">
-            <FaListUl size={24} />
+            <FaList size={24} />
           </SheetTrigger>
           <SheetContent>
             <div className="fixed top-0 left-0 w-64 h-full bg-gray-100 p-4">

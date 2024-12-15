@@ -18,6 +18,7 @@ import ManageProducts from "@/pages/Dashboard/USER/ManageProducts";
 import MyReviews from "@/pages/Dashboard/USER/MyReviews";
 import ManageOrders from "@/pages/Dashboard/VENDOR/ManageOrders";
 import ManageReviews from "@/pages/Dashboard/VENDOR/ManageReviews";
+import ManageMyShop from "@/pages/Dashboard/VENDOR/ManageShop";
 
 const routes = createBrowserRouter([
   {
@@ -102,10 +103,10 @@ const routes = createBrowserRouter([
       },
       // Vendor Routes
       {
-        path: "manageShop",
+        path: "manageMyShop",
         element: (
           <CheckVendor>
-            <ManageShop />
+            <ManageMyShop />
           </CheckVendor>
         ),
       },
