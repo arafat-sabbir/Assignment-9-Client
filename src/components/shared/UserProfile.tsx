@@ -7,7 +7,11 @@ import { Button } from "../ui/button";
 import { logOut, TUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/features/hooks";
 import { Link } from "react-router";
-import { ShoppingCart, SquareChartGantt } from "lucide-react";
+import {
+  PersonStandingIcon,
+  ShoppingCart,
+  SquareChartGantt,
+} from "lucide-react";
 
 const UserProfile = ({ user, cart }: { user: TUser; cart: number }) => {
   const dispatch = useAppDispatch();
@@ -18,9 +22,7 @@ const UserProfile = ({ user, cart }: { user: TUser; cart: number }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          className="rounded-full p-1 h-12 w-12 shadow-2xl"
-        >
+        <Button className="rounded-full p-1 h-12 w-12 shadow-2xl">
           <img
             src={
               "https://i.ibb.co.com/tQ0K88j/dummy-profile-pic-300x300-1-removebg-preview.png"
@@ -37,6 +39,13 @@ const UserProfile = ({ user, cart }: { user: TUser; cart: number }) => {
         <h3 className="text-md font-semibold font-bai text-gray-500">
           {user?.email}
         </h3>
+        <Link
+          className="flex items-center gap-2 w-full justify-center py-2 px-4 text-sm text-white bg-primary rounded-md hover:bg-primary-dark transition duration-300"
+          to={"/dashboard/myProfile"}
+        >
+          <PersonStandingIcon className="w-4 h-4" />
+          Profile
+        </Link>
         <Link
           className="flex items-center gap-2 w-full justify-center py-2 px-4 text-sm text-white bg-primary rounded-md hover:bg-primary-dark transition duration-300"
           to={"/cart"}

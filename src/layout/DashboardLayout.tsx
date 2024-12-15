@@ -18,196 +18,223 @@ import {
   selectCurrentUser,
   TUser,
 } from "@/redux/features/auth/authSlice";
-
-// ... (previous imports and useGetUser hook)
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useState } from "react";
 
 const DashBoard = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const handleSignOut = () => {
     dispatch(logOut());
     navigate("/");
   };
   const userinfo = useAppSelector(selectCurrentUser) as TUser;
-  const navigate = useNavigate();
   const role = userinfo?.role;
+  const [sheetOpen, setSheetOpen] = useState(false);
   const dashboardItem = (
-    <ul className="menu p-4 space-y-2 uppercase ">
+    <ul className="space-y-4 p-4">
       {role === "ADMIN" ? (
         <>
-          {/* admin sidebar */}
+          {/* Admin Sidebar */}
           <li>
-            <NavLink to={"/dashboard/myProfile"}>
+            <NavLink
+              to="/dashboard/myProfile"
+              className="flex items-center space-x-2"
+            >
               <FaUser />
-              Admin Profile
+              <span>Admin Profile</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/manageProperties"}>
-              <MdOutlineHolidayVillage /> Manage ProperTies
+            <NavLink
+              to="/dashboard/manageProperties"
+              className="flex items-center space-x-2"
+            >
+              <MdOutlineHolidayVillage />
+              <span>Manage Properties</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/manageUsers"}>
+            <NavLink
+              to="/dashboard/manageUsers"
+              className="flex items-center space-x-2"
+            >
               <FaUsersRays />
-              Manage Users
+              <span>Manage Users</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/manageReviews"}>
+            <NavLink
+              to="/dashboard/manageReviews"
+              className="flex items-center space-x-2"
+            >
               <MdOutlineReviews />
-              Manage Reviews
+              <span>Manage Reviews</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/adverTiseProperty"}>
+            <NavLink
+              to="/dashboard/adverTiseProperty"
+              className="flex items-center space-x-2"
+            >
               <RiAdvertisementLine />
-              AdverTise Property
+              <span>Advertise Property</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/agentRequest"}>
+            <NavLink
+              to="/dashboard/agentRequest"
+              className="flex items-center space-x-2"
+            >
               <RiGitPullRequestFill />
-              Agent Request
+              <span>Agent Request</span>
             </NavLink>
           </li>
         </>
       ) : role === "USER" ? (
-        // user navbar
         <>
+          {/* User Sidebar */}
           <li>
-            <NavLink to={"/dashboard/myProfile"}>
-              <FaUser /> My Profile
+            <NavLink
+              to="/dashboard/myProfile"
+              className="flex items-center space-x-2"
+            >
+              <FaUser />
+              <span>My Profile</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/wishlist"}>
-              <TbBrandWish /> WishList
+            <NavLink
+              to="/dashboard/wishlist"
+              className="flex items-center space-x-2"
+            >
+              <TbBrandWish />
+              <span>Wishlist</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/propertyBought"}>
-              <TbHomeDollar /> Property Bought
+            <NavLink
+              to="/dashboard/propertyBought"
+              className="flex items-center space-x-2"
+            >
+              <TbHomeDollar />
+              <span>Property Bought</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/myReview"}>
-              <GoCodeReview /> My Review
+            <NavLink
+              to="/dashboard/myReview"
+              className="flex items-center space-x-2"
+            >
+              <GoCodeReview />
+              <span>My Review</span>
             </NavLink>
           </li>
         </>
       ) : role === "VENDOR" ? (
         <>
+          {/* Vendor Sidebar */}
           <li>
-            <NavLink to={"/dashboard/myProfile"}>
-              <FaUser /> Agent Profile
+            <NavLink
+              to="/dashboard/myProfile"
+              className="flex items-center space-x-2"
+            >
+              <FaUser />
+              <span>Agent Profile</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/addProperty"}>
-              <HiOutlineFolderAdd /> Add Property
+            <NavLink
+              to="/dashboard/addProperty"
+              className="flex items-center space-x-2"
+            >
+              <HiOutlineFolderAdd />
+              <span>Add Property</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/addedProperties"}>
-              <GoListUnordered /> My Added Properties
+            <NavLink
+              to="/dashboard/addedProperties"
+              className="flex items-center space-x-2"
+            >
+              <GoListUnordered />
+              <span>My Added Properties</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/soldProperties"}>
-              <RiMoneyEuroCircleLine /> My Sold Properties
+            <NavLink
+              to="/dashboard/soldProperties"
+              className="flex items-center space-x-2"
+            >
+              <RiMoneyEuroCircleLine />
+              <span>My Sold Properties</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/dashboard/requestedProperties"}>
-              <IoIosGitPullRequest /> Requested Properties
+            <NavLink
+              to="/dashboard/requestedProperties"
+              className="flex items-center space-x-2"
+            >
+              <IoIosGitPullRequest />
+              <span>Requested Properties</span>
             </NavLink>
           </li>
         </>
-      ) : (
-        ""
-      )}
-      <div className="divider divider-error"></div>
+      ) : null}
+      <div className="border-t border-gray-300 my-4"></div>
       <li>
-        <NavLink to={"/"}>
-          <FaHome></FaHome> Home
+        <NavLink to="/" className="flex items-center space-x-2">
+          <FaHome />
+          <span>Home</span>
         </NavLink>
       </li>
-      <div className="pb-2 mx-auto" onClick={handleSignOut}>
+      <li>
         <button
-          className="relative px-24 py-2   bg-[#072730] text-white  isolation-auto z-10 border rounded-full border-dashed border-main 
-          before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-right-full before:hover:right-0 before:rounded-full  before:bg-main hover:text-white before:-z-10  before:aspect-square before:hover:scale-150 overflow-hidden before:hover:duration-700"
+          onClick={handleSignOut}
+          className="w-full px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
         >
           Sign Out
         </button>
-      </div>
+      </li>
     </ul>
   );
 
   return (
     <div className="flex">
-      <div className="fixed h-screen  w-72 bg-[#F2FFE9] rounded-2xl hidden lg:block">
-        <img
-          src={
-            "https://i.ibb.co.com/tQ0K88j/dummy-profile-pic-300x300-1-removebg-preview.png"
-          }
-          className="w-20 h-20 rounded-full p-4 mx-auto border border-dashed border-main  mt-6"
-          alt=""
-        />
-        <h3 className="text-lg font-semibold text-center">Welcome Back</h3>
-        <h3 className="text-center text-2xl font-semibold mt-1">
-          <span className="text-main  font-bold">{userinfo.name}</span>
-        </h3>
-        <div className="divider divider-error px-4 -mb-1"></div>
-        {dashboardItem}
-      </div>
-      <div className="drawer  lg:hidden">
-        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content">
-          {/* Page content here */}
-          <div className="flex justify-center">
-            <div className="flex">
-              <label
-                htmlFor="my-drawer"
-                className="drawer-button z-50 absolute"
-              >
-                <p className="pt-4 pl-4 text-2xl">
-                  <FaListUl></FaListUl>
-                </p>
-              </label>
-              <div className="flex lg:hidden">
-                <Outlet></Outlet>
-              </div>
-            </div>
-          </div>
+      {/* Sidebar */}
+      <aside className="w-72 bg-gray-100 h-screen hidden lg:block p-4">
+        <div className="text-center">
+          <img
+            src={
+              "https://i.ibb.co.com/tQ0K88j/dummy-profile-pic-300x300-1-removebg-preview.png"
+            }
+            alt="Profile"
+            className="w-20 h-20 rounded-full mx-auto border border-gray-300"
+          />
+          <h3 className="text-lg font-semibold mt-4">Welcome Back</h3>
+          <h3 className="text-xl font-bold text-red-600">{userinfo.name}</h3>
         </div>
-        <div className="drawer-side">
-          <label
-            htmlFor="my-drawer"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
-          <ul className="menu p-4 bg-[#F2FFE9] text-base-content h-screen">
-            <div>
-              <img
-                src={
-                  "https://i.ibb.co.com/tQ0K88j/dummy-profile-pic-300x300-1-removebg-preview.png"
-                }
-                className="w-20 h-20 rounded-full p-4 mx-auto border border-dashed border-main  mt-6"
-                alt=""
-              />
-              <h3 className="text-center text-xl font-semibold mt-1">
-                Hello{" "}
-                <span className="text-main font-bold">{userinfo.name}</span>
-              </h3>
-              <div className="divider divider-error px-4 -mb-1"></div>
-              <div>{dashboardItem}</div>
+        <div className="mt-6">{dashboardItem}</div>
+      </aside>
+
+      {/* Mobile Drawer */}
+      <div className="lg:hidden rounded-full h-full bg-gray-100 p-4">
+        <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+          <SheetTrigger className="rounded-full">
+            <FaListUl size={24}/>
+          </SheetTrigger>
+          <SheetContent>
+            <div className="fixed top-0 left-0 w-64 h-full bg-gray-100 p-4">
+              {dashboardItem}
             </div>
-          </ul>
-        </div>
+          </SheetContent>
+        </Sheet>
       </div>
-      <div className="flex-1 ml-72 hidden lg:block">
-        <Outlet></Outlet>
-      </div>
+
+      {/* Content Area */}
+      <main className="flex-1 p-4">
+        <Outlet />
+      </main>
     </div>
   );
 };
