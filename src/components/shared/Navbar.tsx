@@ -5,9 +5,16 @@ import { useEffect, useState } from "react";
 import Container from "./Container";
 import Menu from "./Menu";
 import NavSheet from "./NavSheet";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
+import { Button } from "../ui/button";
+import { useTheme } from "../ui/theme-provider";
+import { Moon, Sun } from "lucide-react";
+import UserProfile from "./UserProfile";
 
 const Navbar = () => {
+  const { theme, setTheme } = useTheme();
+  const cartProducts = JSON.parse(localStorage.getItem("cart") || "[]");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
   const [isSticky, setIsSticky] = useState(false);
   // Handle sticky navbar
   useEffect(() => {
@@ -39,6 +46,29 @@ const Navbar = () => {
           <Menu isNavbarSticky={isSticky} />
         </div>
         <div className="hidden lg:flex justify-end basis-[204px] ">
+          <div className="flex md:gap-6 gap-2 items-center">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            >
+              {theme === "light" ? (
+                <Sun className="h-[1.2rem] w-[1.2rem] rotate-90 scale-100 transition-all" />
+              ) : (
+                <Moon className="h-[1.2rem] w-[1.2rem] text-white scale-100 transition-all" />
+              )}
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+            {!user ? (
+              <Link to={"/login"}>
+                <Button className="lg:block hidden dark:text-white">
+                  Login
+                </Button>
+              </Link>
+            ) : (
+              <UserProfile user={user} cart={cartProducts?.length} />
+            )}
+          </div>
           <NavLink
             to="/login"
             className="text-[#494949] font-medium hover:text-[#0d6efd]"
