@@ -23,10 +23,8 @@ import { useState } from "react";
 
 const DashBoard = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const handleSignOut = () => {
     dispatch(logOut());
-    navigate("/");
   };
   const userinfo = useAppSelector(selectCurrentUser) as TUser;
   const role = userinfo?.role;
@@ -37,21 +35,18 @@ const DashBoard = () => {
         <>
           {/* Admin Sidebar */}
           <li>
-            <NavLink
-              to="/dashboard/myProfile"
-              className="flex items-center space-x-2"
-            >
+            <NavLink to="/dashboard" className="flex items-center space-x-2">
               <FaUser />
-              <span>Admin Profile</span>
+              <span>Dashboard</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/manageProperties"
+              to="/dashboard/manageShop"
               className="flex items-center space-x-2"
             >
               <MdOutlineHolidayVillage />
-              <span>Manage Properties</span>
+              <span>Manage Shop</span>
             </NavLink>
           </li>
           <li>
@@ -65,29 +60,29 @@ const DashBoard = () => {
           </li>
           <li>
             <NavLink
-              to="/dashboard/manageReviews"
+              to="/dashboard/manageCategories"
               className="flex items-center space-x-2"
             >
               <MdOutlineReviews />
-              <span>Manage Reviews</span>
+              <span>Manage Category</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/adverTiseProperty"
+              to="/dashboard/manageTransaction"
               className="flex items-center space-x-2"
             >
               <RiAdvertisementLine />
-              <span>Advertise Property</span>
+              <span>Advertise Transaction</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/agentRequest"
+              to="/dashboard/manageReview"
               className="flex items-center space-x-2"
             >
               <RiGitPullRequestFill />
-              <span>Agent Request</span>
+              <span>Manage Review</span>
             </NavLink>
           </li>
         </>
@@ -96,29 +91,20 @@ const DashBoard = () => {
           {/* User Sidebar */}
           <li>
             <NavLink
-              to="/dashboard/myProfile"
+              to="/dashboard/order"
               className="flex items-center space-x-2"
             >
               <FaUser />
-              <span>My Profile</span>
+              <span>Order History</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/wishlist"
+              to="/dashboard/products"
               className="flex items-center space-x-2"
             >
               <TbBrandWish />
-              <span>Wishlist</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/dashboard/propertyBought"
-              className="flex items-center space-x-2"
-            >
-              <TbHomeDollar />
-              <span>Property Bought</span>
+              <span>Manage Products</span>
             </NavLink>
           </li>
           <li>
@@ -135,48 +121,45 @@ const DashBoard = () => {
         <>
           {/* Vendor Sidebar */}
           <li>
-            <NavLink
-              to="/dashboard/myProfile"
-              className="flex items-center space-x-2"
-            >
+            <NavLink to="/dashboard" className="flex items-center space-x-2">
               <FaUser />
-              <span>Agent Profile</span>
+              <span>Dashboard</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/addProperty"
+              to="/dashboard/manageShop"
               className="flex items-center space-x-2"
             >
               <HiOutlineFolderAdd />
-              <span>Add Property</span>
+              <span>Manage Shop</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/addedProperties"
+              to="/dashboard/manageProduct"
               className="flex items-center space-x-2"
             >
               <GoListUnordered />
-              <span>My Added Properties</span>
+              <span>Manage Product</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/soldProperties"
+              to="/dashboard/manage-orders"
               className="flex items-center space-x-2"
             >
               <RiMoneyEuroCircleLine />
-              <span>My Sold Properties</span>
+              <span>Manage Orders</span>
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/dashboard/requestedProperties"
+              to="/dashboard/manage-reviews"
               className="flex items-center space-x-2"
             >
               <IoIosGitPullRequest />
-              <span>Requested Properties</span>
+              <span>Manage Reviews</span>
             </NavLink>
           </li>
         </>
@@ -221,7 +204,7 @@ const DashBoard = () => {
       <div className="lg:hidden rounded-full h-full bg-gray-100 p-4">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger className="rounded-full">
-            <FaListUl size={24}/>
+            <FaListUl size={24} />
           </SheetTrigger>
           <SheetContent>
             <div className="fixed top-0 left-0 w-64 h-full bg-gray-100 p-4">
