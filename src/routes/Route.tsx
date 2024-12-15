@@ -1,3 +1,6 @@
+import PrivateRoute from "@/components/Auth/PrivateRoute";
+import Profile from "@/components/Dashboard/Profile";
+import DashBoard from "@/layout/DashboardLayout";
 import RootLayout from "@/layout/RootLayout";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/login/Login";
@@ -6,7 +9,7 @@ import { createBrowserRouter } from "react-router";
 
 const routes = createBrowserRouter([
   {
-  path: "/",
+    path: "/",
     element: <RootLayout />,
     children: [
       {
@@ -22,6 +25,21 @@ const routes = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashBoard></DashBoard>
+      </PrivateRoute>
+    ),
+    children: [
+      // all user routes
+      {
+        path: "myProfile",
+        element: <Profile></Profile>,
+      },
+    ],
   },
 ]);
 

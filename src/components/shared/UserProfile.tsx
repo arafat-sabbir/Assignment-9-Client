@@ -4,7 +4,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import generateImage from "@/utils/generateImage";
 import { logOut, TUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/features/hooks";
 import { Link } from "react-router";
