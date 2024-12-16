@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Container from "./Container";
 import Menu from "./Menu";
 import NavSheet from "./NavSheet";
-import { Link} from "react-router";
+import { Link } from "react-router";
 import { Button } from "../ui/button";
 import { useTheme } from "../ui/theme-provider";
 import { Moon, Sun } from "lucide-react";
@@ -33,7 +33,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  console.log(user);
   return (
     <nav
       className={cn(
@@ -44,7 +43,13 @@ const Navbar = () => {
       )}
     >
       <Container className="flex items-center gap-4 justify-between py-3 lg:py-6 duration-300">
-        <div className="basis-[204px]">AssignMent 8</div>
+        <Link
+          to={"/"}
+          className="basis-[204px] cursor-pointer flex justify-center items-center gap-1"
+        >
+          <img src="/image/logo.png" className="size-12" alt="" />
+          <h1 className="font-semibold text-2xl">Shop Easy</h1>
+        </Link>
         <div className="hidden lg:block">
           <Menu isNavbarSticky={isSticky} />
         </div>

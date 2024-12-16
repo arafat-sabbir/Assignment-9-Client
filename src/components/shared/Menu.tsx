@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router";
 
 const fakeMenu = [
   { id: 1, name: "Home", path: "/" },
-  { id: 2, name: "About", path: "/about" },
+  { id: 2, name: "All Products", path: "/products" },
   { id: 3, name: "Contact", path: "/contact" },
 ];
 

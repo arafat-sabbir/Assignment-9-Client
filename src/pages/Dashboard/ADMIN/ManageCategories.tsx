@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import CustomDataTable from "@/components/shared/CustomDataTable";
 import { Input } from "@/components/ui/input";
+import TablePagination from "@/components/shared/DataTablePagination";
+import { Card, CardContent } from "@/components/ui/card";
 // import { useForm } from "react-hook-form";
 
 const ManageCategories = () => {
@@ -27,7 +29,7 @@ const ManageCategories = () => {
   const columns = [
     {
       accessorKey: "id",
-      header: "ID",
+      header: "Id",
     },
     {
       accessorKey: "name",
@@ -42,32 +44,37 @@ const ManageCategories = () => {
   });
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Manage Categories</h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Add Category</Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <h2 className="text-xl font-semibold mb-4">Add Category</h2>
-            <form>
-              <Input
-                value={newCategory}
-                onChange={(e) => setNewCategory(e.target.value)}
-                placeholder="Enter category name"
-              />
-              <Button onClick={handleAddCategory} className="mt-4 w-full">
-                Save
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {/* Categories Table */}
-      <CustomDataTable table={table} noDataMessage="No categories Available" />
-    </div>
+    <Card>
+      <CardContent className="space-y-6 p-6 ">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Manage Categories</h1>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>Add Category</Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <h2 className="text-xl font-semibold mb-4">Add Category</h2>
+              <form>
+                <Input
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  placeholder="Enter category name"
+                />
+                <Button onClick={handleAddCategory} className="mt-4 w-full">
+                  Save
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+        {/* Categories Table */}
+        <CustomDataTable
+          table={table}
+          noDataMessage="No categories Available"
+        />
+        <TablePagination table={table} data={categories} />
+      </CardContent>
+    </Card>
   );
 };
 

@@ -207,12 +207,12 @@ const DashBoard = () => {
       </aside>
 
       {/* Mobile Drawer */}
-      <div className="lg:hidden rounded-full h-full bg-gray-100 p-4">
+      <div className="lg:hidden rounded-full h-full bg-gray-100">
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-          <SheetTrigger className="rounded-full">
+          <SheetTrigger className="rounded-full absolute top-4 left-4 z-10">
             <FaList size={24} />
           </SheetTrigger>
-          <SheetContent>
+          <SheetContent side={'left'} className="w-64">
             <div className="fixed top-0 left-0 w-64 h-full bg-gray-100 p-4">
               {dashboardItem}
             </div>
@@ -221,7 +221,7 @@ const DashBoard = () => {
       </div>
 
       {/* Content Area */}
-      <main className="flex-1 p-4">
+      <main className="flex-1 p-4 mt-8">
         <Outlet />
       </main>
     </div>

@@ -46,20 +46,15 @@ const UserProfile = ({ user, cart }: { user: TUser; cart: number }) => {
           <PersonStandingIcon className="w-4 h-4" />
           Profile
         </Link>
-        <Link
-          className="flex items-center gap-2 w-full justify-center py-2 px-4 text-sm text-white bg-primary rounded-md hover:bg-primary-dark transition duration-300"
-          to={"/cart"}
-        >
-          <ShoppingCart className="w-4 h-4" />
-          My Cart ({cart})
-        </Link>
-        <Link
-          className="flex items-center gap-2 w-full justify-center py-2 px-4 text-sm text-white bg-primary rounded-md hover:bg-primary-dark transition duration-300"
-          to={"/manage_products"}
-        >
-          <SquareChartGantt className="w-4 h-4" />
-          Product Management
-        </Link>
+        {user.role === "USER" && (
+          <Link
+            className="flex items-center gap-2 w-full justify-center py-2 px-4 text-sm text-white bg-primary rounded-md hover:bg-primary-dark transition duration-300"
+            to={"/cart"}
+          >
+            <ShoppingCart className="w-4 h-4" />
+            My Cart ({cart})
+          </Link>
+        )}
         <Button
           className="w-full bg-red-500 hover:bg-red-600 hover:text-white text-white rounded-md py-2"
           onClick={handleLogOut}
