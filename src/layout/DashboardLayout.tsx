@@ -1,16 +1,16 @@
 import { NavLink, Outlet } from "react-router";
-import { 
-  FaHome, 
-  FaUsers, 
-  FaShoppingCart, 
-  FaList, 
-  FaTag, 
-  FaRegBuilding, 
-  FaMoneyBillWave, 
+import {
+  FaHome,
+  FaUsers,
+  FaShoppingCart,
+  FaList,
+  FaTag,
+  FaRegBuilding,
+  FaMoneyBillWave,
   FaStore,
   FaClipboardList,
   FaStar,
-  FaRegCommentDots
+  FaRegCommentDots,
 } from "react-icons/fa";
 import { MdCategory, MdReviews, MdAnalytics } from "react-icons/md";
 import { IoMdLogOut } from "react-icons/io";
@@ -34,13 +34,21 @@ const DashBoard = () => {
   const role = userinfo?.role;
   const [sheetOpen, setSheetOpen] = useState(false);
 
+  // Sidebar items with active link styles
   const dashboardItem = (
     <ul className="space-y-4 p-4">
       {role === "ADMIN" ? (
         <>
           {/* Admin Sidebar */}
           <li>
-            <NavLink to="/dashboard" className="flex items-center space-x-2">
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
+            >
               <MdAnalytics />
               <span>Dashboard</span>
             </NavLink>
@@ -48,7 +56,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manageShop"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaStore />
               <span>Manage Shop</span>
@@ -57,7 +69,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manageUsers"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaUsers />
               <span>Manage Users</span>
@@ -66,7 +82,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manageCategories"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <MdCategory />
               <span>Manage Category</span>
@@ -75,7 +95,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manageTransaction"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaMoneyBillWave />
               <span>Advertise Transaction</span>
@@ -84,7 +108,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manageReview"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <MdReviews />
               <span>Manage Review</span>
@@ -97,7 +125,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/order"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaShoppingCart />
               <span>Order History</span>
@@ -106,7 +138,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/products"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaList />
               <span>Manage Products</span>
@@ -115,7 +151,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/myReview"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaStar />
               <span>My Review</span>
@@ -126,7 +166,14 @@ const DashBoard = () => {
         <>
           {/* Vendor Sidebar */}
           <li>
-            <NavLink to="/dashboard" className="flex items-center space-x-2">
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
+            >
               <AiFillDashboard />
               <span>Dashboard</span>
             </NavLink>
@@ -134,7 +181,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manageMyShop"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaRegBuilding />
               <span>Manage Shop</span>
@@ -143,7 +194,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manageProduct"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaTag />
               <span>Manage Product</span>
@@ -152,7 +207,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manage-orders"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaClipboardList />
               <span>Manage Orders</span>
@@ -161,7 +220,11 @@ const DashBoard = () => {
           <li>
             <NavLink
               to="/dashboard/manage-reviews"
-              className="flex items-center space-x-2"
+              className={({ isActive }) =>
+                `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+                  isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
               <FaRegCommentDots />
               <span>Manage Reviews</span>
@@ -171,7 +234,14 @@ const DashBoard = () => {
       ) : null}
       <div className="border-t border-gray-300 my-4"></div>
       <li>
-        <NavLink to="/" className="flex items-center space-x-2">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+              isActive ? "bg-red-600 text-white" : "hover:bg-gray-200"
+            }`
+          }
+        >
           <FaHome />
           <span>Home</span>
         </NavLink>
@@ -194,9 +264,7 @@ const DashBoard = () => {
       <aside className="w-72 bg-gray-100 h-screen hidden lg:block p-4">
         <div className="text-center">
           <img
-            src={
-              "https://i.ibb.co.com/tQ0K88j/dummy-profile-pic-300x300-1-removebg-preview.png"
-            }
+            src="https://i.ibb.co.com/tQ0K88j/dummy-profile-pic-300x300-1-removebg-preview.png"
             alt="Profile"
             className="w-20 h-20 rounded-full mx-auto border border-gray-300"
           />
@@ -212,7 +280,7 @@ const DashBoard = () => {
           <SheetTrigger className="rounded-full absolute top-4 left-4 z-10">
             <FaList size={24} />
           </SheetTrigger>
-          <SheetContent side={'left'} className="w-64">
+          <SheetContent side={"left"} className="w-64">
             <div className="fixed top-0 left-0 w-64 h-full bg-gray-100 p-4">
               {dashboardItem}
             </div>
