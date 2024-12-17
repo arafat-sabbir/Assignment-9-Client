@@ -20,7 +20,6 @@ import { Loader } from "lucide-react";
 import addProduct from "@/actions/vendor/add-product";
 import deleteProduct from "@/actions/vendor/delete-product";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { SelectContent } from "@radix-ui/react-select";
 import getAllCategories from "@/actions/admin/get-all-categories";
 import { SelectItem } from "@/components/ui/select";
 
@@ -32,14 +31,28 @@ const productSchema = z.object({
   description: z
     .string()
     .min(5, { message: "Product description must be at least 5 characters" }),
-  price: z.number().positive({ message: "Price must be a positive number" }),
-  discount: z.number().min(0).max(100).optional(),
+  price: z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+    message: "Price must be a positive number",
+  }),
+  discount: z
+    .string()
+    .refine(
+      (val) => !isNaN(Number(val)) && Number(val) >= 0 && Number(val) <= 100,
+      {
+        message: "Discount must be a number between 0 and 100",
+      }
+    )
+    .optional(),
   inventory: z
-    .number()
-    .int()
-    .min(0, { message: "Inventory must be a non-negative number" }),
-  categoryId: z.number().int({ message: "Category ID must be a valid number" }),
-  images: z.instanceof(FileList).optional(),
+    .string()
+    .refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
+      message: "Inventory must be a non-negative number",
+    }),
+  categoryId: z
+    .string()
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Category ID must be a valid number",
+    }),
 });
 
 type ProductFormInputs = z.infer<typeof productSchema>;
@@ -53,7 +66,14 @@ const ManageProduct = () => {
   const [dialogMode, setDialogMode] = useState<"add" | "edit">("add");
   const [currentProduct, setCurrentProduct] = useState<any>(null);
   const [productLoading, setProductLoading] = useState(false);
+  const [images, setImages] = useState<File[]>([]);
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return; // Ensure files are present
+    const uploadedFiles = Array.from(e.target.files); // Convert FileList to Array
+    setImages((prevImages) => [...prevImages, ...uploadedFiles]); // Append new images to the existing state
+  };
+  console.log(images, "images");
   // Initialize form with Zod resolver
   const form = useForm<ProductFormInputs>({
     resolver: zodResolver(productSchema),
@@ -107,11 +127,12 @@ const ManageProduct = () => {
       formData.append("categoryId", data.categoryId.toString());
 
       // Append images if provided
-      if (data.images) {
-        Array.from(data.images).forEach((file) => {
+      if (images) {
+        Array.from(images).forEach((file) => {
           formData.append("images", file);
         });
       }
+      console.log("formData:", Object.fromEntries(formData));
 
       if (dialogMode === "add") {
         const result = await addProduct(formData);
@@ -292,22 +313,27 @@ const ManageProduct = () => {
                       type="number"
                       placeholder="Select Your product category"
                     >
-                      {categories.map((category) => (
-                        <SelectItem
-                          key={category.id}
-                          value={category.id.toString()}
-                        >
-                          {category.name}
+                      {categories.length > 0 ? (
+                        categories.map((category) => (
+                          <SelectItem
+                            key={category.id}
+                            value={category.id.toString()}
+                          >
+                            {category.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="" disabled>
+                          No category available
                         </SelectItem>
-                      ))}
+                      )}
                     </CustomFormField>
-                    <CustomFormField
-                      control={control}
-                      fieldType={FormFieldType.FILE}
+                    <input
+                      onChange={(e) => handleImageUpload(e)}
+                      type={FormFieldType.FILE}
                       name="images"
-                      label="Product Images"
                       placeholder="Upload product images"
-                      //  ty multiple
+                      multiple={true}
                     />
                     <div className="flex justify-end">
                       <Button

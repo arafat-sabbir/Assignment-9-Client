@@ -49,6 +49,7 @@ interface CustomProps {
   type?: string;
   renderSkeleton?: (field: any) => ReactNode;
   min?: number;
+  multiple?: boolean;
   max?: number;
   step?: number;
 }
@@ -62,6 +63,7 @@ const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
     placeholder,
     className,
     type,
+    multiple,
     onChange,
   } = props;
 
@@ -79,6 +81,7 @@ const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
                   if (onChange) onChange(files[0]); // Custom handler
                 }
               }}
+              multiple={multiple}
               accept="image/*"
               className={cn(
                 "rounded-md border px-4 py-2 focus:ring-2 focus:outline-none",
