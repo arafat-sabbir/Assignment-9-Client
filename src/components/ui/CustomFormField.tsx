@@ -26,6 +26,7 @@ export enum FormFieldType {
   TAGS = "tags",
   CHECKBOX = "checkbox",
   PASSWORD = "password",
+  FILE = "file", // Add file type
   RANGE = "range", // Add range type
 }
 
@@ -61,10 +62,35 @@ const RenderIField = ({ field, props }: { field: any; props: CustomProps }) => {
     placeholder,
     className,
     type,
-    onChange
+    onChange,
   } = props;
 
   switch (fieldType) {
+    case FormFieldType.FILE:
+      return (
+        <FormControl>
+          <div className="flex flex-col space-y-2">
+            <input
+              type="file"
+              onChange={(e) => {
+                const files = e.target.files;
+                if (files && files[0]) {
+                  field.onChange(files[0]); // Update field with the selected file
+                  if (onChange) onChange(files[0]); // Custom handler
+                }
+              }}
+              accept="image/*"
+              className={cn(
+                "rounded-md border px-4 py-2 focus:ring-2 focus:outline-none",
+                className
+              )}
+              placeholder={placeholder}
+              disabled={props.disabled}
+            />
+          </div>
+        </FormControl>
+      );
+
     case FormFieldType.INPUT:
       return (
         <div className={cn("flex rounded-md border", className)}>

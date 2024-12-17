@@ -11,7 +11,7 @@ const CustomDataTable = ({
   return (
     <Card className="border-transparent relative overflow-hidden bg-white text-[#ff1010] rounded-md">
       <CardContent className="flex flex-col justify-between p-0">
-        <div className="border-[#E8E8E8] border rounded-md max-w-[90vw] lg:max-w-[70vw]">
+        <div className="border-[#E8E8E8] border rounded-md max-w-[90vw] lg:max-w-[68vw]">
           {/* Responsive wrapper for horizontal scrolling */}
           <div className="overflow-x-auto custom-scrollbar">
             <table className="w-full table-auto text-sm lg:text-base text-center text-t-800">
