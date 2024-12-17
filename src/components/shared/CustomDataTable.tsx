@@ -11,7 +11,7 @@ const CustomDataTable = ({
   return (
     <Card className="border-transparent relative overflow-hidden bg-white text-[#ff1010] rounded-md">
       <CardContent className="flex flex-col justify-between p-0">
-        <div className="border-[#E8E8E8] border rounded-md max-w-[90vw]">
+        <div className="border-[#E8E8E8] border rounded-md max-w-[90vw] lg:max-w-[70vw]">
           {/* Responsive wrapper for horizontal scrolling */}
           <div className="overflow-x-auto custom-scrollbar">
             <table className="w-full table-auto text-sm lg:text-base text-center text-t-800">
@@ -48,7 +48,7 @@ const CustomDataTable = ({
                       {row.getVisibleCells().map((cell) => (
                         <td
                           key={cell.id}
-                          className="text-[#787878] text-center min-w-[100px] max-w-[300px] text-nowrap border-l first:border-l-0 border-[#E8E8E8] h-[54px] px-2"
+                          className="text-[#787878] text-center min-w-[200px] max-w-[300px] text-nowrap border-l first:border-l-0 border-[#E8E8E8] h-[54px] px-2"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

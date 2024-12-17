@@ -18,7 +18,7 @@ import CustomFormField, {
   FormFieldType,
 } from "@/components/ui/CustomFormField";
 import { Button } from "@/components/ui/button";
-import signIn from "@/services/auth/signIn";
+import signIn from "@/actions/auth/signIn";
 
 const Login = ({ className }: { className?: string }) => {
   const dispatch = useAppDispatch();

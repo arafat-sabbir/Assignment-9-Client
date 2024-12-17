@@ -17,7 +17,7 @@ import CustomFormField, {
 } from "@/components/ui/CustomFormField";
 import { Button } from "@/components/ui/button";
 import { SelectItem } from "@/components/ui/select";
-import signUp from "@/services/auth/signUp";
+import signUp from "@/actions/auth/signUp";
 
 const Register = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
