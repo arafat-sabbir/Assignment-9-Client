@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
@@ -6,14 +6,24 @@ import CustomDataTable from "@/components/shared/CustomDataTable";
 import { Input } from "@/components/ui/input";
 import TablePagination from "@/components/shared/DataTablePagination";
 import { Card, CardContent } from "@/components/ui/card";
+import getAllCategories from "@/actions/admin/get-all-categories";
 // import { useForm } from "react-hook-form";
 
 const ManageCategories = () => {
-  const [categories, setCategories] = useState([
-    { id: 1, name: "Electronics" },
-    { id: 2, name: "Clothing" },
-    { id: 3, name: "Groceries" },
-  ]);
+  const [categories, setCategories] = useState<
+    { categories: string; id: string }[] | []
+  >([]);
+  useEffect(() => {
+    const getAllCategory = async () => {
+      try {
+        const response = await getAllCategories();
+        setCategories(response?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getAllCategory();
+  }, []);
 
   const [newCategory, setNewCategory] = useState("");
 
