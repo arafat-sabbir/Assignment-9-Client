@@ -35,7 +35,7 @@ type CategoryFormInputs = z.infer<typeof categorySchema>;
 const ManageProduct = () => {
   const [shops, setShops] = useState<any[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [shopLogo, setShopLogo] = useState(null);
+  const [shopLogo, setShopLogo] = useState<File | null>(null);
 
   // Initialize form with Zod resolver
   const form = useForm<CategoryFormInputs>({
@@ -49,8 +49,7 @@ const ManageProduct = () => {
   const {
     control,
     handleSubmit,
-    reset,
-    formState: { errors },
+    reset
   } = form;
 
   // Fetch shops
@@ -211,7 +210,9 @@ const ManageProduct = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setShopLogo(e.target.files[0])}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setShopLogo(e.target.files?.[0] as File)
+                    }
                   />
                   <Button
                     disabled={shopLoading}

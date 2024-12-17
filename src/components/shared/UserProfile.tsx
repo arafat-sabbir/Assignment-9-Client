@@ -10,7 +10,6 @@ import { Link } from "react-router";
 import {
   PersonStandingIcon,
   ShoppingCart,
-  SquareChartGantt,
 } from "lucide-react";
 
 const UserProfile = ({ user, cart }: { user: TUser; cart: number }) => {

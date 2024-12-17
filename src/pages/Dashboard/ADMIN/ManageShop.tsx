@@ -1,103 +1,235 @@
+import { useEffect, useState } from "react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import CustomDataTable from "@/components/shared/CustomDataTable";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { useState } from "react";
-import moment from "moment";
-import { Card, CardContent } from "@/components/ui/card";
+import Swal from "sweetalert2";
 import TablePagination from "@/components/shared/DataTablePagination";
+import { Card, CardContent } from "@/components/ui/card";
+import getAllShop from "@/actions/vendor/get-all-shop";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import CustomFormField, {
+  FormFieldType,
+} from "@/components/ui/CustomFormField";
+import { Form } from "@/components/ui/form";
+import addNewShop from "@/actions/vendor/add-shop";
+import deleteShop from "@/actions/vendor/delete-shop";
+import { toast } from "sonner";
+import { Loader } from "lucide-react";
+
+// Zod schema for form validation
+const categorySchema = z.object({
+  shopName: z
+    .string()
+    .min(2, { message: "Shop name must be at least 2 characters" }),
+  shopDesc: z
+    .string()
+    .min(5, { message: "Shop description must be at least 5 characters" }),
+  shopImage: z.instanceof(FileList).optional(),
+});
+
+type CategoryFormInputs = z.infer<typeof categorySchema>;
 
 const ManageShop = () => {
-  const [shop, setShop] = useState([
-    {
-      id: 1,
-      shopName: "John Doe",
-      shopDescription: "This is a shop",
-      shopLogo: "",
-      user: {
-        id: 1,
-        name: "John Doe",
-        role: "VENDOR",
-        email: "john.doe@example.com",
-        status: "ACTIVE",
-        createdAt: new Date().toISOString(),
-      },
+  const [shops, setShops] = useState<any[]>([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [shopLogo, setShopLogo] = useState<File | null>(null);
+
+  // Initialize form with Zod resolver
+  const form = useForm<CategoryFormInputs>({
+    resolver: zodResolver(categorySchema),
+    defaultValues: {
+      shopName: "",
+      shopDesc: "",
     },
-    {
-      id: 2,
-      shopName: "Jane Doe",
-      shopDescription: "This is a shop",
-      shopLogo: "",
-      user: {
-        id: 2,
-        name: "Jane Doe",
-        role: "USER",
-        email: "jane.doe@example.com",
-        status: "SUSPENDED",
-        createdAt: new Date().toISOString(),
-      },
-    },
-    {
-      id: 3,
-      shopName: "Bob Smith",
-      shopDescription: "This is a shop",
-      shopLogo: "",
-      user: {
-        id: 3,
-        name: "Bob Smith",
-        role: "VENDOR",
-        email: "bob.smith@example.com",
-        status: "DELETED",
-        createdAt: new Date().toISOString(),
-      },
-    },
-  ]);
-  // Define table columns and data
+  });
+
+  const { control, handleSubmit, reset } = form;
+
+  // Fetch shops
+  useEffect(() => {
+    const fetchShops = async () => {
+      try {
+        const response = await getAllShop();
+        setShops(response?.data);
+      } catch (error) {
+        console.error("Error fetching shops:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Failed to fetch shops",
+        });
+      }
+    };
+    fetchShops();
+  }, []);
+  const [shopLoading, setShopLoading] = useState(false);
+  // Add shop handler
+  const onAddShopSubmit: SubmitHandler<CategoryFormInputs> = async (data) => {
+    setShopLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("shopName", data.shopName);
+      formData.append("shopDesc", data.shopDesc);
+
+      // Only append image if a file is selected
+      if (shopLogo) {
+        formData.append("shopLogo", shopLogo);
+      }
+      const result = await addNewShop(formData);
+      // Show success message
+      toast.success(result?.message);
+      console.log(result);
+      setDialogOpen(false);
+      reset(); // Reset form after successful submission
+      refetchShop();
+    } catch (error: any) {
+      console.error("Error adding shop:", error);
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setShopLoading(false);
+    }
+  };
+
+  // Refetch shops
+  const refetchShop = async () => {
+    try {
+      const response = await getAllShop();
+      setShops(response?.data);
+    } catch (error) {
+      console.error("Error refetching shops:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to refresh shops",
+      });
+    }
+  };
+
+  const handleDeleteShop = async (id: string) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to delete this shop?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteShop(id);
+          refetchShop();
+          toast.success("Shop deleted successfully");
+        } catch (error: any) {
+          console.error("Error deleting Shop:", error);
+          toast.error(error?.response?.data?.message);
+        }
+      }
+    });
+  };
+  // Table columns
   const columns = [
+    { accessorKey: "id", header: "Id" },
     {
-      accessorKey: "id",
-      header: "Id",
+      accessorKey: "shopLogo",
+      cell: (info: any) =>
+        info.getValue() ? (
+          <img
+            src={info.getValue()}
+            alt={info.row.original.name}
+            className="size-20 rounded-full shadow-xl mx-auto object-cover my-2"
+          />
+        ) : (
+          "N/A"
+        ),
     },
+    { accessorKey: "shopName", header: "Shop Name" },
     {
-      accessorKey: "shopName",
-      header: "Shop Name",
-    },
-    {
-      accessorKey: "shopDescription",
+      accessorKey: "shopDesc",
       header: "Shop Description",
-    },
-    {
-      accessorKey: "user.name",
-      header: "User",
-    },
-    {
-      accessorKey: "user.role",
-      header: "Role",
-    },
-    {
-      accessorKey: "user.status",
-      header: "Status",
-    },
-    {
-      accessorKey: "user.createdAt",
-      header: "User Since",
       cell: (info: any) => (
-        <>{moment(info.getValue()).format("DD MMM, YYYY")}</>
+        <p className="capitalize">{info.getValue() || "N/A"}</p>
+      ),
+    },
+    {
+      header: "Delete Category",
+      cell: (info: any) => (
+        <Button
+          className="h-8"
+          onClick={() => handleDeleteShop(info.row.original?.id)}
+        >
+          Delete
+        </Button>
       ),
     },
   ];
 
   const table = useReactTable({
-    data: shop,
+    data: shops,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
   return (
     <Card>
-      <h1 className="pl-8 p-4 text-2xl font-medium text-[#4A4A4A]">
-        Manage Shop
-      </h1>
-      <CardContent className="space-y-4">
-        <CustomDataTable table={table} noDataMessage="No Shop Available" />
-        <TablePagination table={table} data={shop} />
+      <CardContent className="space-y-6 p-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Manage Shop</h1>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button disabled={shops?.length > 0}>Add Shop</Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <h2 className="text-xl font-semibold mb-4">Add Shop</h2>
+              <Form {...form}>
+                <form
+                  onSubmit={handleSubmit(onAddShopSubmit)}
+                  className="space-y-4"
+                >
+                  <CustomFormField
+                    control={control}
+                    fieldType={FormFieldType.INPUT}
+                    name="shopName"
+                    label="Shop Name"
+                    placeholder="Enter shop name"
+                  />
+                  <CustomFormField
+                    control={control}
+                    fieldType={FormFieldType.INPUT}
+                    name="shopDesc"
+                    label="Shop Description"
+                    placeholder="Enter shop description"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      setShopLogo(
+                        (e.target as HTMLInputElement).files?.[0] as File | null
+                      )
+                    }
+                  />
+                  <Button
+                    disabled={shopLoading}
+                    className="mt-4 w-full"
+                    type="submit"
+                  >
+                    Save{" "}
+                    {shopLoading && (
+                      <Loader className="animate-spin ml-2"></Loader>
+                    )}
+                  </Button>
+                </form>
+              </Form>
+            </DialogContent>
+          </Dialog>
+        </div>
+        {/* Data Table */}
+        <CustomDataTable table={table} noDataMessage="No shops available" />
+        <TablePagination table={table} data={shops} />
       </CardContent>
     </Card>
   );

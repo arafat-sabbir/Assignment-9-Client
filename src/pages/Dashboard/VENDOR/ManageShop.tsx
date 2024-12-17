@@ -6,9 +6,6 @@ import CustomDataTable from "@/components/shared/CustomDataTable";
 import Swal from "sweetalert2";
 import TablePagination from "@/components/shared/DataTablePagination";
 import { Card, CardContent } from "@/components/ui/card";
-import getAllCategories from "@/actions/admin/get-all-categories";
-import addNewCategory from "@/actions/admin/add-new-category";
-import deleteCategory from "@/actions/admin/delete-category";
 import getAllShop from "@/actions/vendor/get-all-shop";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
@@ -38,7 +35,7 @@ type CategoryFormInputs = z.infer<typeof categorySchema>;
 const ManageCategories = () => {
   const [shops, setShops] = useState<any[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [shopLogo, setShopLogo] = useState(null);
+  const [shopLogo, setShopLogo] = useState<File | null>(null);
 
   // Initialize form with Zod resolver
   const form = useForm<CategoryFormInputs>({
@@ -49,12 +46,7 @@ const ManageCategories = () => {
     },
   });
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = form;
+  const { control, handleSubmit, reset } = form;
 
   // Fetch shops
   useEffect(() => {
@@ -214,14 +206,16 @@ const ManageCategories = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setShopLogo(e.target.files[0])}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setShopLogo(e.target.files?.[0] as File)
+                    }
                   />
                   <Button
                     disabled={shopLoading}
                     className="mt-4 w-full"
                     type="submit"
                   >
-                    Save{" "}
+                    Save{" "} 
                     {shopLoading && (
                       <Loader className="animate-spin ml-2"></Loader>
                     )}

@@ -1,6 +1,11 @@
+//@ts-ignore
 import "swiper/css";
+//@ts-ignore
 import "swiper/css/autoplay";
+//@ts-ignore
 import "swiper/css/navigation";
+//@ts-ignore
+
 import "swiper/css/pagination";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -71,7 +76,11 @@ const WeeklyDiscount = () => {
                     <span>{blogPost.rating}</span>
                   </div>
                   <span>
-                    ({blogPost.numberOfReviews > 1 ? `${blogPost.numberOfReviews} reviews` : `${blogPost.numberOfReviews} review`})
+                    (
+                    {blogPost.numberOfReviews > 1
+                      ? `${blogPost.numberOfReviews} reviews`
+                      : `${blogPost.numberOfReviews} review`}
+                    )
                   </span>
                 </div>
                 <p className="text-xs lg:text-sm text-white line-clamp-1 pointer-events-auto">
@@ -87,4 +96,3 @@ const WeeklyDiscount = () => {
 };
 
 export default WeeklyDiscount;
-

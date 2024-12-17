@@ -1,6 +1,10 @@
+// @ts-ignore 
 import "swiper/css";
+// @ts-ignore 
 import "swiper/css/autoplay";
+// @ts-ignore 
 import "swiper/css/navigation";
+// @ts-ignore 
 import "swiper/css/pagination";
 
 import { Swiper, SwiperSlide } from "swiper/react";

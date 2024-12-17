@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { RegisterFormValidation } from "@/lib/validation";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router";
-import useAxiosPublic from "@/hooks/AxiosPublic";
 import { useState } from "react"; // Import useState to manage the image file
 import { Loader } from "lucide-react";
 import Container from "@/components/shared/Container";
@@ -21,7 +20,6 @@ import signUp from "@/actions/auth/signUp";
 
 const Register = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
-  const axios = useAxiosPublic();
   const form = useForm<z.infer<typeof RegisterFormValidation>>({
     resolver: zodResolver(RegisterFormValidation),
     defaultValues: {
