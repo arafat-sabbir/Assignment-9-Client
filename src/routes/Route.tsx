@@ -14,7 +14,7 @@ import ManageCategories from "@/pages/Dashboard/ADMIN/ManageCategories";
 import ManageTransactions from "@/pages/Dashboard/ADMIN/ManageTransactions";
 import ManageReview from "@/pages/Dashboard/ADMIN/ManageReview";
 import OrderHistory from "@/pages/Dashboard/USER/OrderHistory";
-import ManageProducts from "@/pages/Dashboard/USER/ManageProducts";
+import ManageProducts from "@/pages/Dashboard/VENDOR/ManageProducts";
 import MyReviews from "@/pages/Dashboard/USER/MyReviews";
 import ManageOrders from "@/pages/Dashboard/VENDOR/ManageOrders";
 import ManageReviews from "@/pages/Dashboard/VENDOR/ManageReviews";
