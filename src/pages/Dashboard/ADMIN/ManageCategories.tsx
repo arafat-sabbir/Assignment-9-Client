@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import CustomDataTable from "@/components/shared/CustomDataTable";
 import { Input } from "@/components/ui/input";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import TablePagination from "@/components/shared/DataTablePagination";
 import { Card, CardContent } from "@/components/ui/card";
 import getAllCategories from "@/actions/admin/get-all-categories";
 import addNewCategory from "@/actions/admin/add-new-category";
+import deleteCategory from "@/actions/admin/delete-category";
 // import { useForm } from "react-hook-form";
 
 const ManageCategories = () => {
@@ -16,21 +17,18 @@ const ManageCategories = () => {
     { categories: string; id: string }[] | []
   >([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [refetch, setRefetch] = useState(false);
   useEffect(() => {
     const getAllCategory = async () => {
       try {
         const response = await getAllCategories();
         setCategories(response?.data);
-        setRefetch(!refetch);
       } catch (error) {
         console.log(error);
       }
     };
     getAllCategory();
-  }, [refetch]);
+  }, []);
 
-  // Add a new category
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -39,12 +37,23 @@ const ManageCategories = () => {
       const result = await addNewCategory(name);
       console.log(result);
       setDialogOpen(false);
+      refetchCategories(); // Refetch categories
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const refetchCategories = async () => {
+    try {
+      const response = await getAllCategories();
+      setCategories(response?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleDeleteCategory = async (id: any) => {
+    console.log(id, "id");
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -66,9 +75,9 @@ const ManageCategories = () => {
       .then(async (result) => {
         if (result.isConfirmed) {
           try {
-            const response = await axiosInstance.delete(`/admin/delete-category/${id}`);
+            const response = await deleteCategory(id);
             console.log(response);
-            setRefetch(!refetch);
+            refetchCategories(); // Refetch categories
           } catch (error) {
             console.log(error);
           }
@@ -81,7 +90,6 @@ const ManageCategories = () => {
         }
       });
   };
-
 
   // Define table columns and data
   const columns = [
@@ -98,7 +106,7 @@ const ManageCategories = () => {
       cell: (info: any) => (
         <Button
           className="h-8"
-          onClick={()=>handleDeleteCategory(info.row.original)}
+          onClick={() => handleDeleteCategory(info.row.original?.id)}
         >
           Delete
         </Button>
