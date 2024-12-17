@@ -39,6 +39,7 @@
     "react-tag-input-component": "^2.0.2",
     "redux-persist": "^6.0.0",
     "sonner": "^1.7.1",
+    "sweetalert2": "^11.15.1",
     "swiper": "^11.1.15",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
