@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import { LoginFormValidation } from "@/lib/validation";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router";
-import useAxiosPublic from "@/hooks/AxiosPublic";
 import { useAppDispatch } from "@/redux/features/hooks";
 import { decodeToken } from "@/utils/decodeToken";
 import { setUser, TUser } from "@/redux/features/auth/authSlice";
@@ -19,9 +18,9 @@ import CustomFormField, {
   FormFieldType,
 } from "@/components/ui/CustomFormField";
 import { Button } from "@/components/ui/button";
+import signIn from "@/services/auth/signIn";
 
 const Login = ({ className }: { className?: string }) => {
-  const axios = useAxiosPublic();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,13 +35,15 @@ const Login = ({ className }: { className?: string }) => {
   const onSubmit = async (values: z.infer<typeof LoginFormValidation>) => {
     setLoading(true);
     try {
-      const result = await axios.post("/auth/signin", values);
-      toast.success(result?.data?.message);
-      const user = decodeToken(result.data.data.accessToken) as TUser;
-      dispatch(setUser({ user, token: result.data.data.accessToken }));
+      const result = await signIn(values);
+      console.log(result);
+      toast.success(result?.message);
+      const user = decodeToken(result.data.accessToken) as TUser;
+      dispatch(setUser({ user, token: result.data.accessToken }));
+      localStorage.setItem("token", result.data.accessToken);
       navigate("/");
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }

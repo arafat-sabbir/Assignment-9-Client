@@ -17,6 +17,7 @@ import CustomFormField, {
 } from "@/components/ui/CustomFormField";
 import { Button } from "@/components/ui/button";
 import { SelectItem } from "@/components/ui/select";
+import signUp from "@/services/auth/signUp";
 
 const Register = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
@@ -36,13 +37,12 @@ const Register = ({ className }: { className?: string }) => {
     setLoading(true);
     console.log(values);
     try {
-      const response = await axios.post("/auth/signup", values);
+      const response = await signUp(values);
       toast.success("Register Successful");
       console.log(response);
       navigate("/login");
     } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }
