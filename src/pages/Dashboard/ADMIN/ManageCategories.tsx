@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import getAllCategories from "@/actions/admin/get-all-categories";
 import addNewCategory from "@/actions/admin/add-new-category";
 import deleteCategory from "@/actions/admin/delete-category";
+import editCategory from "@/actions/admin/edit-category";
 // import { useForm } from "react-hook-form";
 
 const ManageCategories = () => {
@@ -17,6 +18,12 @@ const ManageCategories = () => {
     { categories: string; id: string }[] | []
   >([]);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
+
   useEffect(() => {
     const getAllCategory = async () => {
       try {
@@ -42,6 +49,22 @@ const ManageCategories = () => {
       console.log(error);
     }
   };
+  const handleEditSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+    id: string
+  ) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string;
+    try {
+      const result = await editCategory(id, name);
+      console.log(result);
+      setEditDialogOpen(false);
+      refetchCategories(); // Refetch categories
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const refetchCategories = async () => {
     try {
@@ -52,7 +75,7 @@ const ManageCategories = () => {
     }
   };
 
-  const handleDeleteCategory = async (id: any) => {
+  const handleDeleteCategory = async (id: string) => {
     console.log(id, "id");
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -100,6 +123,58 @@ const ManageCategories = () => {
     {
       accessorKey: "name",
       header: "Category Name",
+    },
+    {
+      accessorKey: "name",
+      header: "Edit Category",
+      cell: (info: any) => {
+        const categoryId = info.row.original.id;
+        const categoryName = info.row.original.name;
+
+        return (
+          <>
+            <Dialog
+              open={editDialogOpen && selectedCategory?.id === categoryId} // Open for specific row
+              onOpenChange={(isOpen) => {
+                setEditDialogOpen(isOpen);
+                if (isOpen) {
+                  setSelectedCategory({ id: categoryId, name: categoryName });
+                } else {
+                  setSelectedCategory(null); // Reset state on close
+                }
+              }}
+            >
+              <DialogTrigger asChild>
+                <Button
+                  className="py-0 px-2 text-xs"
+                  onClick={() =>
+                    setSelectedCategory({ id: categoryId, name: categoryName })
+                  }
+                >
+                  Edit Category
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <h2 className="text-xl font-semibold mb-4">Edit Category</h2>
+                <form
+                  onSubmit={(e) =>
+                    handleEditSubmit(e, selectedCategory?.id as string)
+                  }
+                >
+                  <Input
+                    name="name"
+                    defaultValue={selectedCategory?.name || ""}
+                    placeholder="Enter category name"
+                  />
+                  <Button className="mt-4 w-full" type="submit">
+                    Save
+                  </Button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </>
+        );
+      },
     },
     {
       header: "Delete Category",
